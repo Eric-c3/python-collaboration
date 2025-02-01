@@ -8,8 +8,8 @@ task_list = ["Do 2140 homework", "Study for physics"]
 
 #==============================================================================
 
-# Function to allow the user to veiw the list
-def user_veiw():
+# Function to allow the user to view the list
+def user_view():
     for i in range(len(task_list)):
         
         # Printing the list with a for loop so we can print the task number of value in the list
@@ -55,7 +55,7 @@ def main():
         # does user want to look at their task? 
         user_ask = input("Do you want to look at your task? (Use y/n): ")
         if user_ask == "y": 
-            user_veiw()
+            user_view()
         else:
             # Does the user want to add to list of tasks?
             user_add = input("Do you want to add new tasks? (Use y/n): ")
