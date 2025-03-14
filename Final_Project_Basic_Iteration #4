@@ -1,6 +1,14 @@
 """
 Final Project - Basic
 Eric Chao, Sharron Chen, Torrey Winrow
+
+NEXT STEPS:
+datatypes trigger
+- length limit, error message if under or above
+- characters cannot be entered in desired password length, error message print 
+- use try function that goes to except that'll tell the user to enter a valid number for the desired length 
+- Do not print the generated password. Send it to email using python 
+
 """
 import random
 import string
