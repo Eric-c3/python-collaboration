@@ -1,0 +1,61 @@
+"""
+Final Project - Basic
+Eric Chao, Sharron Chen, Torrey Winrow
+"""
+import random
+import string
+
+#------------------------------------------------------------------------------
+
+def generate_password(length, use_uppercase, num_special_chars, num_numbers):
+    if length < num_special_chars + num_numbers:
+        print("Error: Length is too short to fit all requested characters.")
+        return ""
+    
+    # Define character sets
+    # Holds all lower case letters in the English alphabet
+    lower_chars = string.ascii_lowercase
+    # Holds all upper case letters in the English alphabet, also based on users answer
+    upper_chars = string.ascii_uppercase if use_uppercase else ""
+    # Holds all printable special charaters 
+    special_chars = string.punctuation
+    # All digits
+    number_chars = string.digits
+    
+    # Generate required characters
+    password = (
+        random.choices(special_chars, k=num_special_chars) +
+        random.choices(number_chars, k=num_numbers)
+    )
+    
+    num_letters = length - num_special_chars - num_numbers
+    
+    if num_letters > 0:
+        if use_uppercase:
+            # Ensure at least one lowercase letter if there are 2+ letters
+            if num_letters > 1:
+                password.append(random.choice(lower_chars))
+                num_letters -= 1
+            
+            password.extend(random.choices(lower_chars + upper_chars, k=num_letters))
+        else:
+            password.extend(random.choices(lower_chars, k=num_letters))
+    
+    # Shuffle to randomize order
+    random.shuffle(password)
+    
+    # Convert list to string
+    return ''.join(password)
+
+#------------------------------------------------------------------------------
+
+# User input
+length = int(input("Enter password length: "))
+use_uppercase = input("Include uppercase letters? (y/n): ").strip().lower() == 'y'
+num_special_chars = int(input("Number of special characters: "))
+num_numbers = int(input("Number of numbers: "))
+
+# Generate and display the password
+password = generate_password(length, use_uppercase, num_special_chars, num_numbers)
+if password:
+    print(f"Generated Password: {password}")
