@@ -1,16 +1,11 @@
 """
-Created on Mon Mar 24 17:12:47 2025
-
-after self.root.configure
-self.root.resizable(False, False)
-
 @author: sharr, torr, er
 """
-
 import tkinter as tk
 from tkinter import messagebox
 import random
 import string
+import os
 
 class PasswordGeneratorApp:
     def __init__(self, root):
@@ -34,9 +29,12 @@ class PasswordGeneratorApp:
         tk.Checkbutton(root, text="Include Uppercase Letters", variable=self.uppercase, font=("Times New Roman", 14), bg="lightblue").pack(pady=8)
 
         tk.Button(root, text="Generate Password", command=self.gen_pass, font=("Times New Roman", 16), bg="lightblue").pack(pady=10)
+        
+        # State of the download button is disabled since the password hasn't been created yet and the user has nothing to download.
+        self.download_button = tk.Button(root, text="Download Password", command=self.download_password, font=("Times New Roman", 16), bg="lightblue", state="disabled")
+        self.download_button.pack(pady=10)
 
-        self.passwordNum = tk.StringVar()
-        tk.Entry(root, textvariable=self.passwordNum, font=("Times New Roman", 14), width=30, state="readonly").pack()
+        self.password = ""
 
     def gen_pass(self):
         try:
@@ -73,11 +71,25 @@ class PasswordGeneratorApp:
                 required_chars += random.choices(all_characters, k=remaining_length)
 
             random.shuffle(required_chars)  # Shuffle to mix characters
-            password = ''.join(required_chars)
-            self.passwordNum.set(password)
+            self.password = ''.join(required_chars)
+            # Password is now generated and joined together with the required parameters created by us and user. 
+
+            self.download_button.config(state="normal") # Enable download button since the password is now generated. 
 
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid number.")
+
+    def download_password(self):
+        if self.password:
+            # Get the users downloads folder and name it password.txt (making it a text file)
+            downloads_path = os.path.join(os.path.expanduser("~"), "Downloads", "password.txt")
+
+            # Write the password to the file in downloads
+            with open(downloads_path, "w") as file: # w means writing mode so we can rewrite anything in the current file (if the file was created before use)
+                # Filling in the file we just created with the password that was just randomly generated 
+                file.write(self.password)
+
+            messagebox.showinfo("Success", f"Your password has been saved to:\n{downloads_path}")
 
 root = tk.Tk()
 app = PasswordGeneratorApp(root)
